@@ -90,16 +90,18 @@ const Media = ({ id }) => {
               href={`${activeSocialMedia.account}`}
               target="__blank"
               rel="noopener noreferrer"
-              className="hover:shadow-lg transition-all duration-150 p-4 bg-white shadow-2xl justify-center w-10/12 mx-auto my-10 py-10 flex items-center space-x-4 rounded-2xl"
+              className="hover:shadow-lg transition-all duration-150 p-4 bg-white shadow-2xl justify-center w-10/12 mx-auto my-10 py-10 block lg:flex items-center lg:space-x-4 rounded-2xl"
             >
-              <img
-                src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                  activeSocialMedia.logo
-                }`}
-                alt={`${activeSocialMedia.name} logo`}
-                className="w-1/12"
-              />
-              <p className="font-semibold text-3xl">
+              <div className="flex  lg:inline justify-center">
+                <img
+                  src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
+                    activeSocialMedia.logo
+                  }`}
+                  alt={`${activeSocialMedia.name} logo`}
+                  className=" w-1/6 lg:w-3/4 object-contain object-center"
+                />
+              </div>
+              <p className="font-semibold text-lg mt-4 lg:mt-0  lg:text-3xl text-center">
                 {" "}
                 {activeSocialMedia.name} Desa Padang Baru{" "}
               </p>

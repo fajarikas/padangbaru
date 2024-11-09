@@ -39,26 +39,34 @@ const Functionary = ({ id }) => {
         bertanggung jawab untuk mengatur jalannya roda pemerintahan desa.
       </p>
 
-      <div className="pb-10 grid grid-cols-4 w-full gap-x-6 mx-auto">
-        {functionary.map((data, key) => (
-          <div
-            key={key}
-            className="mt-5 w-10/12 rounded-xl bg-white hover:shadow-md transition duration-300 cursor-pointer shadow-xl  "
-          >
-            <img
-              className=" h-[380px] rounded-t-xl object-cover"
-              src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                data.picture
-              }`}
-              alt=""
-            />
+      <div className="pb-10 lg:grid lg:mt-0 mt-10 lg:grid-cols-4 block w-full gap-x-6 mx-auto">
+        {loading ? (
+          <>
+            <p>Loading...</p>
+          </>
+        ) : (
+          <>
+            {functionary.map((data, key) => (
+              <div
+                key={key}
+                className="mt-5 w-10/12 rounded-xl mx-auto bg-white hover:shadow-md transition duration-300 cursor-pointer shadow-xl  "
+              >
+                <img
+                  className="w-[350px] h-[280px] lg:w-[400px] lg:h-[380px] rounded-t-xl object-cover"
+                  src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
+                    data.picture
+                  }`}
+                  alt=""
+                />
 
-            <div className="block py-5 mx-4 ">
-              <p className="text-2xl font-semibold">{data.name}</p>
-              <p className="text-lg w-full">{data.title.name}</p>
-            </div>
-          </div>
-        ))}
+                <div className="block py-5 mx-4 ">
+                  <p className="text-2xl font-semibold">{data.name}</p>
+                  <p className="text-lg w-full">{data.title.name}</p>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

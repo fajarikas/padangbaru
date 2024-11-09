@@ -20,29 +20,40 @@ const Footer = () => {
   return (
     <div className="bg-black text-white mt-10 pt-12 pb-7">
       <div className="w-11/12 mx-auto">
-        <div className="flex items ">
-          <div className="w-1/3">
+        <div className="flex flex-col lg:flex-row space-y-10 lg:space-y-0">
+          <div className="lg:w-1/3">
             <p className="font-bold text-2xl tracking-extraWide">
               DESA PADANG BARU
             </p>
             <div className="flex mt-5 items-center space-x-4">
               <img
-                className="h-16"
+                className="h-12 sm:h-16"
                 src="/images/content/Logo_Kampus_Merdeka_Kemendikbud.png"
                 alt=""
               />
-              <img className="h-16" src="/images/content/logo-uny.png" alt="" />
-              <img className="h-16" src="/images/content/LOGO KKN.png" alt="" />
+              <img
+                className="h-12 sm:h-16"
+                src="/images/content/logo-uny.png"
+                alt=""
+              />
+              <img
+                className="h-12 sm:h-16"
+                src="/images/content/LOGO KKN.png"
+                alt=""
+              />
             </div>
 
-            <div className="text-3xl mt-5 flex items-center space-x-3">
+            <div className="text-2xl sm:text-3xl mt-5 flex items-center space-x-3">
               <FaYoutube />
               <FaFacebookSquare />
             </div>
           </div>
-          <div className="w-2/3  flex justify-end space-x-32">
+
+          <div className="lg:w-2/3 flex flex-col lg:flex-row lg:justify-end lg:space-x-32 space-y-10 lg:space-y-0">
             <div>
-              <p className="tracking-extraWide text-xl font-semibold">DESA</p>
+              <p className="tracking-extraWide text-lg lg:text-xl font-semibold">
+                DESA
+              </p>
               <ul className="space-y-2 mt-1">
                 <li>
                   <button onClick={() => scrollToSection("history")}>
@@ -81,8 +92,9 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
+
             <div>
-              <p className="tracking-extraWide text-xl font-semibold">
+              <p className="tracking-extraWide text-lg lg:text-xl font-semibold">
                 INFORMASI
               </p>
               <ul className="space-y-2 mt-1">
@@ -90,20 +102,21 @@ const Footer = () => {
                   <Link to="/news/news">Kabar Desa</Link>
                 </li>
                 <li>
-                  <Link>Pengumuman</Link>
+                  <Link to="/news/announcements">Pengumuman</Link>
                 </li>
               </ul>
             </div>
+
             <div>
-              <p className="tracking-extraWide text-xl font-semibold">
+              <p className="tracking-extraWide text-lg lg:text-xl font-semibold">
                 INFRASTRUKTUR
               </p>
               <ul className="space-y-2 mt-1">
                 <li>
-                  <Link>Bumi Desa</Link>
+                  <Link to="/infrastructure/land">Bumdesa</Link>
                 </li>
                 <li>
-                  <Link>Perpustakaan</Link>
+                  <Link to="/infrastructure/library">Perpustakaan</Link>
                 </li>
               </ul>
             </div>
@@ -112,8 +125,8 @@ const Footer = () => {
       </div>
 
       <div className="pt-10">
-        <hr />
-        <p className="mt-5 w-full text-center">
+        <hr className="border-gray-700" />
+        <p className="mt-5 w-10/12 mx-auto lg:w-full text-center text-sm lg:text-base">
           Made with ♡︎ by{" "}
           <a
             className="text-added-yellow hover:underline transition duration-300"

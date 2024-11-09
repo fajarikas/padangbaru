@@ -16,8 +16,10 @@ const Header = ({ id }) => {
         className="w-full h-full object-cover"
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white-primary bg-black bg-opacity-50 px-4">
-        <h1 className="text-4xl lg:text-6xl font-bold">DESA PADANG BARU</h1>
-        <p className="mt-8 max-w-xl text-lg font-light">
+        <h1 className="lg:w-ful w-3/4 text-4xl lg:text-6xl font-bold">
+          DESA PADANG BARU
+        </h1>
+        <p className="mt-8   lg:max-w-xl text-sm lg:text-lg font-light">
           Desa Padang Baru, tempat harmoni antara alam dan usaha warga, adalah
           desa dengan potensi peternakan yang kuat dan berkelanjutan. Dengan
           sumber daya alam yang melimpah dan semangat gotong royong yang tinggi,
@@ -26,7 +28,7 @@ const Header = ({ id }) => {
         </p>
         <button
           onClick={() => scrollToSection("history")}
-          className="mt-8 px-10 py-3 border-transparent hover:bg-transparent hover:border-added-green hover:border transition-all duration-300 bg-added-green font-normal text-white-primary "
+          className="mt-8 lg:px-10 lg:py-3 px-7 py-2 lg:text-base text-sm border-transparent hover:bg-transparent hover:border-added-green hover:border transition-all duration-300 bg-added-green font-normal text-white-primary "
         >
           Lebih lanjut
         </button>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BiMenu } from "react-icons/bi";
+import { MdOutlineClose } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -8,9 +9,7 @@ const Navbar = () => {
   const [information, setInformation] = useState(false);
   const [infrastructure, setInfrastructure] = useState(false);
   const [mobileNavbar, setMobileNavbar] = useState(false);
-
-  const infoRef = useRef(null);
-  const infraRef = useRef(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,12 +25,12 @@ const Navbar = () => {
     }
   };
 
-  const handleInfoButton = () => {
+  const handleInfoButtonMobile = () => {
     setInformation(!information);
     setInfrastructure(false);
   };
 
-  const handleInfraButton = () => {
+  const handleInfraButtonMobile = () => {
     setInfrastructure(!infrastructure);
     setInformation(false);
   };
@@ -41,7 +40,6 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScrolled);
-
     return () => {
       window.removeEventListener("scroll", handleScrolled);
     };
@@ -51,32 +49,26 @@ const Navbar = () => {
     setMobileNavbar(!mobileNavbar);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (infoRef.current && !infoRef.current.contains(event.target)) {
-        setInformation(false);
-      }
-      if (infraRef.current && !infraRef.current.contains(event.target)) {
-        setInfrastructure(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleCloseNavbar = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setMobileNavbar(false);
+    }, 500);
+  };
 
   return (
     <div>
+      {/* Desktop Navbar */}
       <div
-        className={`hidden lg:inline z-50 fixed top-0 py-5 text-white-primary w-full transition-all duration-300 ${
+        className={`hidden lg:flex z-50 fixed top-0 py-5 text-white w-full transition-all duration-300 ${
           isScrolled ? "bg-black bg-opacity-90" : "bg-transparent"
         }`}
       >
         <div className="w-11/12 mx-auto flex items-center justify-between">
-          <Link className="flex gap-x-2 items-center" exact to="/">
+          <Link className="flex gap-x-2 items-center" to="/">
             <img
-              className="w-1/12"
+              className="w-8"
               src="/images/content/Lambang_Kabupaten_Bangka_Tengah.png"
               alt="Logo"
             />
@@ -88,79 +80,108 @@ const Navbar = () => {
             <button onClick={() => scrollToSection("history")}>
               Tentang Desa
             </button>
-
-            <div ref={infoRef} className="relative">
-              <button
-                className="flex items-center space-x-1"
-                onClick={handleInfoButton}
-              >
-                Informasi Desa <IoMdArrowDropdown />
-              </button>
-              {information && (
-                <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
-                  <ul>
-                    <li className="hover:border-b-2 hover:border-white transition-all duration-150">
-                      <Link to="/news/news">Kabar Desa</Link>
-                    </li>
-                    <li className="hover:border-b-2 hover:border-white transition-all duration-150">
-                      <Link to="/news/announcements">Pengumuman</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-
-            <div ref={infraRef} className="relative">
-              <button
-                className="flex items-center space-x-1"
-                onClick={handleInfraButton}
-              >
-                Infrastruktur Desa <IoMdArrowDropdown />
-              </button>
-              {infrastructure && (
-                <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
-                  <ul>
-                    <li className="hover:border-b-2 hover:border-white transition-all duration-150">
-                      <Link to="/news/2">Perpustakaan</Link>
-                    </li>
-                    <li className="hover:border-b-2 hover:border-white transition-all duration-150">
-                      <Link to="/news/announcements">Bumdes</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
 
-      <div className=" inline lg:hidden z-50 fixed top-0 py-2 text-white-primary w-screen  transition-all duration-300 bg-black bg-opacity-90">
+      {/* Mobile Navbar */}
+      <div
+        className={`lg:hidden z-50 fixed top-0 py-4 text-white w-full transition-all duration-300 ${
+          isScrolled ? "bg-black" : "bg-transparent"
+        }`}
+      >
         <div className="w-3/4 flex mx-auto items-center justify-between">
           <div className="flex items-center gap-x-4">
             <img
-              className="w-[24px]"
+              className="w-8"
               src="/images/content/Lambang_Kabupaten_Bangka_Tengah.png"
-              alt=""
+              alt="Logo"
             />
-            <p className="text-xs">
+            <p className="text-sm">
               Desa <br /> Padang Baru
             </p>
           </div>
-          <div>
-            <button onClick={handleMobileNavbar}>
-              <BiMenu />
-            </button>
+          <button onClick={handleMobileNavbar}>
+            <BiMenu className="text-2xl" />
+          </button>
+        </div>
 
-            {mobileNavbar && (
-              <div className="bg-black bg-opacity-80 ">
+        {mobileNavbar && (
+          <div
+            className={`fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center transition-transform duration-500 ${
+              isClosing ? "animate-slideUp" : "animate-slideDown"
+            }`}
+          >
+            <button
+              onClick={handleCloseNavbar}
+              className="absolute top-10 left-10 text-xl text-white"
+            >
+              <MdOutlineClose />
+            </button>
+            <ul className="text-white text-lg space-y-6 text-center">
+              <li>
                 <button onClick={() => scrollToSection("header")}>Home</button>
+              </li>
+              <li>
                 <button onClick={() => scrollToSection("history")}>
                   Tentang Desa
                 </button>
-              </div>
-            )}
+              </li>
+
+              <li className="relative">
+                <button
+                  className="flex items-center space-x-1"
+                  onClick={handleInfoButtonMobile}
+                >
+                  Informasi Desa <IoMdArrowDropdown />
+                </button>
+                <div
+                  className={`dropdown-content ${
+                    information ? "active" : ""
+                  } absolute left-0 mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg w-48 transition-all duration-300 ease-in-out`}
+                  style={{ marginBottom: information ? "20px" : "0px" }}
+                >
+                  {information && (
+                    <ul>
+                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                        <Link to="/news/news">Kabar Desa</Link>
+                      </li>
+                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                        <Link to="/news/announcements">Pengumuman</Link>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+              </li>
+
+              <li className="relative">
+                <button
+                  className="flex items-center space-x-1"
+                  onClick={handleInfraButtonMobile}
+                >
+                  Infrastruktur Desa <IoMdArrowDropdown />
+                </button>
+                <div
+                  className={`dropdown-content ${
+                    infrastructure ? "active" : ""
+                  } absolute left-0 mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg w-48 transition-all duration-300 ease-in-out`}
+                  style={{ marginBottom: infrastructure ? "20px" : "0px" }}
+                >
+                  {infrastructure && (
+                    <ul>
+                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                        <Link to="/infrastructure/library">Perpustakaan</Link>
+                      </li>
+                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                        <Link to="/infrastructure/bumdesa">Bumdesa</Link>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+              </li>
+            </ul>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

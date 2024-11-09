@@ -37,7 +37,7 @@ export default function GallerySlider({ id }) {
 
   return (
     <div id={id}>
-      <div className="mt-64 w-1/2  mx-auto">
+      <div className="mt-96 lg:mt-64 w-1/2  mx-auto">
         <SectionTitle
           textColor="text-brown-primary"
           color="bg-added-green"
@@ -57,7 +57,7 @@ export default function GallerySlider({ id }) {
                       image.picture
                     }`}
                     alt={image.alt}
-                    className=" h-[417px] w-[919px] shadow-md"
+                    className=" h-[320px] lg:h-[417px]  lg:w-[919px] object-cover object-center  shadow-md"
                   />
                 </div>
               ))}

@@ -18,14 +18,15 @@ const VisionMission = ({ id }) => {
   };
 
   return (
-    <div id={id} className="relative pt-10 z-20">
+    <div id={id} className="relative pt-10 z-20 mt-32 lg:mt-0">
       <img
-        className="absolute inset-0 w-full  object-cover -z-10 "
+        className="absolute h-screen lg:h-min inset-0 w-full  object-cover -z-10 "
         src="/images/content/visimisi.jpg"
         alt=""
       />
+
       <div className="relative w-11/12 mx-auto">
-        <div className="pt-10">
+        <div className="pt-12 lg:pt-10">
           <SectionTitle
             color="bg-added-yellow"
             position="ml-auto"
@@ -56,7 +57,7 @@ const VisionMission = ({ id }) => {
 
             {activeVisionMission && (
               <div className="">
-                <p className="mt-10 text-white-primary text-2xl">
+                <p className="mt-10 text-justify text-white-primary text-2xl">
                   {Array.isArray(activeVisionMission.content) ? (
                     <>
                       <ol className="">
