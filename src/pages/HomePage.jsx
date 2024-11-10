@@ -10,7 +10,7 @@ import Functionary from "../parts/Home/Functionary";
 import Media from "../parts/Home/Media";
 import Footer from "../parts/Footer";
 
-const Home = () => {
+const HomePage = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -40,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
