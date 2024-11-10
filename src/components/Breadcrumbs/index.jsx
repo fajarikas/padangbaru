@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Breadcrumb({ list }) {
   return (
-    <section className="text-white-primary py-8 px-4">
+    <section className="text-white-primary py-3 lg:py-8 px-4">
       <div className="container mx-auto">
         <ul className="breadcrumb">
           {list?.map?.((item, index) => {

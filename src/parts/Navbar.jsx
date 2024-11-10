@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { BiMenu } from "react-icons/bi";
 import { MdOutlineClose } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -10,6 +10,8 @@ const Navbar = () => {
   const [infrastructure, setInfrastructure] = useState(false);
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isInfoDisplayed, setIsInfoDisplayed] = useState(false);
+  const [isInfraDisplayed, setIsInfraDisplayed] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,16 +25,64 @@ const Navbar = () => {
     } else {
       navigate(`/?section=${sectionId}`);
     }
+    closeAllDropdowns();
+    handleCloseNavbar();
   };
 
-  const handleInfoButtonMobile = () => {
-    setInformation(!information);
+  const closeAllDropdowns = () => {
+    setIsInfoDisplayed(false);
+    setIsInfraDisplayed(false);
+    setInformation(false);
     setInfrastructure(false);
   };
 
+  const handleInfoButton = () => {
+    setIsInfoDisplayed((prev) => !prev);
+    setIsInfraDisplayed(false); // Close other dropdown
+  };
+
+  const handleInfraButton = () => {
+    setIsInfraDisplayed((prev) => !prev);
+    setIsInfoDisplayed(false); // Close other dropdown
+  };
+
+  const handleInfoButtonMobile = () => {
+    setInformation((prev) => !prev);
+    setInfrastructure(false); // Close other dropdown
+  };
+
   const handleInfraButtonMobile = () => {
-    setInfrastructure(!infrastructure);
-    setInformation(false);
+    setInfrastructure((prev) => !prev);
+    setInformation(false); // Close other dropdown
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const sectionId = params.get("section");
+    if (sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  const handleMobileNavbar = () => {
+    setMobileNavbar((prev) => !prev);
+    closeAllDropdowns(); // Ensure all dropdowns close when mobile menu is toggled
+  };
+
+  const handleCloseNavbar = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setMobileNavbar(false);
+      closeAllDropdowns();
+    }, 500);
   };
 
   useEffect(() => {
@@ -45,21 +95,9 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleMobileNavbar = () => {
-    setMobileNavbar(!mobileNavbar);
-  };
-
-  const handleCloseNavbar = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      setMobileNavbar(false);
-    }, 500);
-  };
-
   return (
     <div>
-      {/* Desktop Navbar */}
+      {/* Desktop nav */}
       <div
         className={`hidden lg:flex z-50 fixed top-0 py-5 text-white w-full transition-all duration-300 ${
           isScrolled ? "bg-black bg-opacity-90" : "bg-transparent"
@@ -80,18 +118,63 @@ const Navbar = () => {
             <button onClick={() => scrollToSection("history")}>
               Tentang Desa
             </button>
+            <div className="relative">
+              <button
+                className="flex items-center gap-x-2"
+                onClick={handleInfoButton}
+              >
+                <p>Informasi Desa</p>
+                <IoMdArrowDropdown />
+              </button>
+              {isInfoDisplayed && (
+                <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
+                  <ul>
+                    <li onClick={closeAllDropdowns}>
+                      <Link to="/news/news">Kabar Desa</Link>
+                    </li>
+                    <li onClick={closeAllDropdowns}>
+                      <Link to="/news/announcements">Pengumuman</Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <button
+                className="flex items-center gap-x-2"
+                onClick={handleInfraButton}
+              >
+                <p>Infrastruktur Desa</p>
+                <IoMdArrowDropdown />
+              </button>
+              {isInfraDisplayed && (
+                <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
+                  <ul>
+                    <li onClick={closeAllDropdowns}>
+                      <Link to="/infrastructure/library">
+                        Perpustakaan Betunas
+                      </Link>
+                    </li>
+                    <li onClick={closeAllDropdowns}>
+                      <Link to="/infrastructure/bumdesa">Bumdesa</Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navbar */}
+      {/* Mobile nav */}
       <div
         className={`lg:hidden z-50 fixed top-0 py-4 text-white w-full transition-all duration-300 ${
           isScrolled ? "bg-black" : "bg-transparent"
         }`}
       >
         <div className="w-3/4 flex mx-auto items-center justify-between">
-          <div className="flex items-center gap-x-4">
+          <Link to="/" className="flex items-center gap-x-4">
             <img
               className="w-8"
               src="/images/content/Lambang_Kabupaten_Bangka_Tengah.png"
@@ -100,12 +183,11 @@ const Navbar = () => {
             <p className="text-sm">
               Desa <br /> Padang Baru
             </p>
-          </div>
+          </Link>
           <button onClick={handleMobileNavbar}>
             <BiMenu className="text-2xl" />
           </button>
         </div>
-
         {mobileNavbar && (
           <div
             className={`fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center transition-transform duration-500 ${
@@ -118,7 +200,7 @@ const Navbar = () => {
             >
               <MdOutlineClose />
             </button>
-            <ul className="text-white text-lg space-y-6 text-center">
+            <ul className="text-white text-lg space-y-6 text-left">
               <li>
                 <button onClick={() => scrollToSection("header")}>Home</button>
               </li>
@@ -138,15 +220,14 @@ const Navbar = () => {
                 <div
                   className={`dropdown-content ${
                     information ? "active" : ""
-                  } absolute left-0 mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg w-48 transition-all duration-300 ease-in-out`}
-                  style={{ marginBottom: information ? "20px" : "0px" }}
+                  } transition-all duration-300 ease-in-out`}
                 >
                   {information && (
-                    <ul>
-                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                    <ul className="mt-4">
+                      <li onClick={handleCloseNavbar}>
                         <Link to="/news/news">Kabar Desa</Link>
                       </li>
-                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                      <li onClick={handleCloseNavbar}>
                         <Link to="/news/announcements">Pengumuman</Link>
                       </li>
                     </ul>
@@ -164,15 +245,14 @@ const Navbar = () => {
                 <div
                   className={`dropdown-content ${
                     infrastructure ? "active" : ""
-                  } absolute left-0 mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg w-48 transition-all duration-300 ease-in-out`}
-                  style={{ marginBottom: infrastructure ? "20px" : "0px" }}
+                  } transition-all duration-300 ease-in-out`}
                 >
                   {infrastructure && (
-                    <ul>
-                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                    <ul className="mt-4">
+                      <li onClick={handleCloseNavbar}>
                         <Link to="/infrastructure/library">Perpustakaan</Link>
                       </li>
-                      <li className="hover:border-b-2 hover:border-white transition-all duration-150">
+                      <li onClick={handleCloseNavbar}>
                         <Link to="/infrastructure/bumdesa">Bumdesa</Link>
                       </li>
                     </ul>
