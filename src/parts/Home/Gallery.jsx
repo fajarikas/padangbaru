@@ -50,7 +50,7 @@ export default function GallerySlider({ id }) {
             <p>Loading...</p>
           ) : (
             <Slider {...settings}>
-              {images.map((image) => (
+              {images?.map((image) => (
                 <div key={image.id}>
                   <img
                     src={`${import.meta.env.VITE_API_BASE_URL}/storage/${

@@ -21,7 +21,7 @@ const Statistic = ({ id }) => {
           textPosition="text-center"
         />
         <div className="block lg:flex justify-center gap-x-14 mt-14">
-          {statistic.map((data, key) => (
+          {statistic?.map((data, key) => (
             <div
               key={key}
               className="lg:mt-0 mt-12 flex items-center justify-center flex-col"

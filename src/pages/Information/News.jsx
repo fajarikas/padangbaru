@@ -36,7 +36,7 @@ const News = () => {
     loadData(currentPage);
   }, [currentPage]);
 
-  const filteredNews = news.filter((item) =>
+  const filteredNews = news?.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
   console.log("berita", news);
@@ -57,7 +57,7 @@ const News = () => {
           text="Berita Paling Baru Seputar Padang Baru"
           textColor="text-added-brown"
         />
-        {filteredNews && filteredNews.length > 0 ? (
+        {filteredNews && filteredNews?.length > 0 ? (
           <Search
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Cari pengumuman..."
@@ -71,8 +71,8 @@ const News = () => {
         <div>loading</div>
       ) : (
         <div className="w-11/12 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-x-12 mt-10">
-          {filteredNews && filteredNews.length > 0 ? (
-            filteredNews.map((item) => (
+          {filteredNews && filteredNews?.length > 0 ? (
+            filteredNews?.map((item) => (
               <div>
                 <NewsCard
                   document={item.document}
@@ -82,7 +82,7 @@ const News = () => {
                   key={item.id}
                   type={item.news_type_id}
                 />
-                {filteredNews.length > 12 ? (
+                {filteredNews?.length > 12 ? (
                   <div className="mt-5 mx-auto w-screen">
                     <Pagination
                       currentPage={currentPage}

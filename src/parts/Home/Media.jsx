@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Media = ({ id }) => {
   const [socialMedia, setSocialMedia] = useState([]);
-  const [activeSocialMedia, setActiveSocialMedia] = useState(socialMedia[1]);
+  const [activeSocialMedia, setActiveSocialMedia] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Media = ({ id }) => {
         setSocialMedia(response.data);
 
         if (response.data && response.data.length > 0) {
-          setActiveSocialMedia(response.data[0]);
+          setActiveSocialMedia(response.data[0]); // Set elemen pertama sebagai default jika ada data
         }
       } catch (e) {
         console.error("Failed to fetch social media", e);
@@ -44,12 +44,12 @@ const Media = ({ id }) => {
           textPosition="text-center"
         />
 
-        <div className="bg-white-primary  px-10 py-10 rounded-lg mt-5">
+        <div className="bg-white-primary px-10 py-10 rounded-lg mt-5">
           <p className="text-lg font-medium">
             Jelajahi Desa Padang Baru di Sosial Media
           </p>
           <div className="flex space-x-4 mt-4">
-            {socialMedia.map((social) => (
+            {socialMedia?.map((social) => (
               <button
                 key={social.id}
                 onClick={() => handleActiveSocialMedia(social)}
@@ -60,8 +60,6 @@ const Media = ({ id }) => {
                       ? social.color
                       : "transparent",
                   color: social.color,
-                  "--tw-border-opacity": "1",
-                  "--tw-border-color": social.color,
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.borderColor = social.color)
@@ -92,18 +90,17 @@ const Media = ({ id }) => {
               rel="noopener noreferrer"
               className="hover:shadow-lg transition-all duration-150 p-4 bg-white shadow-2xl justify-center w-10/12 mx-auto my-10 py-10 block lg:flex items-center lg:space-x-4 rounded-2xl"
             >
-              <div className="flex  lg:inline justify-center">
+              <div className="flex lg:inline justify-center">
                 <img
                   src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
                     activeSocialMedia.logo
                   }`}
                   alt={`${activeSocialMedia.name} logo`}
-                  className=" w-1/6 lg:w-3/4 object-contain object-center"
+                  className="w-1/6 lg:w-3/4 object-contain object-center"
                 />
               </div>
-              <p className="font-semibold text-lg mt-4 lg:mt-0  lg:text-3xl text-center">
-                {" "}
-                {activeSocialMedia.name} Desa Padang Baru{" "}
+              <p className="font-semibold text-lg mt-4 lg:mt-0 lg:text-3xl text-center">
+                {activeSocialMedia.name} Desa Padang Baru
               </p>
             </a>
           )}

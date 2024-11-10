@@ -11,10 +11,16 @@ export default function Breadcrumb({ list }) {
             const arias =
               index === list.length - 1 ? { "aria-label": "current-page" } : {};
             return (
-              <li key={item.url}>
-                <Link to={item.url} {...arias}>
-                  {item.name}
-                </Link>
+              <li key={item.id || index}>
+                {" "}
+                {/* Gunakan item.id jika ada, atau index sebagai fallback */}
+                {item.url ? (
+                  <Link to={item.url} {...arias}>
+                    {item.name}
+                  </Link>
+                ) : (
+                  <span {...arias}>{item.name}</span>
+                )}
               </li>
             );
           })}
@@ -25,5 +31,11 @@ export default function Breadcrumb({ list }) {
 }
 
 Breadcrumb.propTypes = {
-  list: propTypes.array.isRequired,
+  list: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.oneOfType([propTypes.string, propTypes.number]),
+      name: propTypes.string.isRequired,
+      url: propTypes.string,
+    })
+  ).isRequired,
 };

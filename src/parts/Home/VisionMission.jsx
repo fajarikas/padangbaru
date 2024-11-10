@@ -36,7 +36,7 @@ const VisionMission = ({ id }) => {
           />
 
           <div className="mt-5">
-            {visionmission.map((data, key) => (
+            {visionmission?.map((data, key) => (
               <React.Fragment key={key}>
                 <button
                   onClick={() => handleButtonClick(data)}
@@ -57,7 +57,7 @@ const VisionMission = ({ id }) => {
 
             {activeVisionMission && (
               <div className="">
-                <p className="mt-10 text-justify text-white-primary text-2xl">
+                <div className="mt-10 text-justify text-white-primary text-2xl">
                   {Array.isArray(activeVisionMission.content) ? (
                     <>
                       <ol className="">
@@ -71,7 +71,7 @@ const VisionMission = ({ id }) => {
                       <p>{activeVisionMission.content}</p>
                     </>
                   )}
-                </p>
+                </div>
               </div>
             )}
           </div>

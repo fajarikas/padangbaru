@@ -46,7 +46,7 @@ const Functionary = ({ id }) => {
           </>
         ) : (
           <>
-            {functionary.map((data, key) => (
+            {functionary?.map((data, key) => (
               <div
                 key={key}
                 className="mt-5 w-10/12 rounded-xl mx-auto bg-white hover:shadow-md transition duration-300 cursor-pointer shadow-xl  "

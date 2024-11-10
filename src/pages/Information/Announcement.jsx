@@ -38,7 +38,7 @@ const Announcement = () => {
     loadData(currentPage);
   }, [currentPage]);
 
-  const filteredNews = news.filter((item) =>
+  const filteredNews = news?.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -69,8 +69,8 @@ const Announcement = () => {
         <div>Loading...</div>
       ) : (
         <div className="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-8 mt-10">
-          {filteredNews.length > 0 ? (
-            filteredNews.map((item, index) => (
+          {filteredNews?.length > 0 ? (
+            filteredNews?.map((item, index) => (
               <React.Fragment key={item.id}>
                 <div>
                   <NewsCard

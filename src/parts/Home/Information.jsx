@@ -14,9 +14,10 @@ const Information = ({ id }) => {
     const loadData = async () => {
       try {
         const response = await fetchData("/news");
-        setNews(response.data);
+        setNews(response.data || []); // Pastikan `news` diisi dengan array kosong jika data tidak ada
       } catch (e) {
         console.error("Failed to fetch news", e);
+        setNews([]); // Tetap set `news` sebagai array kosong jika terjadi error
       } finally {
         setLoading(false);
       }
@@ -25,12 +26,15 @@ const Information = ({ id }) => {
     loadData();
   }, []);
 
+  console.log("news", news);
+
   const handleFilter = (type) => {
     setNewsType(type);
   };
 
-  const filteredNews = news
-    .filter((item) => item.news_type_id === newsType)
+  // Pastikan hanya mem-filter ketika `news` adalah array
+  const filteredNews = (news && Array.isArray(news) ? news : [])
+    .filter((item) => item?.news_type_id === newsType)
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(0, 5);
 

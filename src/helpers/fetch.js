@@ -8,6 +8,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -22,6 +23,7 @@ api.interceptors.request.use((config) => {
 export const fetchData = async (endpoint) => {
   try {
     const response = await api.get(endpoint);
+    // console.log("response", response);
     return response.data;
   } catch (e) {
     console.error(e);
