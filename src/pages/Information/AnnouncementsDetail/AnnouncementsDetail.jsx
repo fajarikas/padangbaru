@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Header from "../../../parts/Information/Header";
 import { fetchData } from "../../../helpers/fetch";
 import SectionTitle from "../../../components/SectionTitle";
+import ReadNews from "../../../parts/Information/ReadNews";
 
 const AnnouncementsDetail = () => {
   const [announcement, setAnnouncement] = useState();
@@ -54,40 +55,19 @@ const AnnouncementsDetail = () => {
         ]}
       />
 
-      <div className="w-11/12 mx-auto mt-10 flex flex-col items-center">
+      <div className="w-11/12 mx-auto mt-5 flex flex-col items-center pb-10">
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="w-full max-w-5xl mx-auto">
+          <div className="w-full mx-auto flex flex-wrap gap-x-10">
             {announcement && (
-              <div>
-                <SectionTitle
-                  color="bg-added-green"
-                  position="mr-auto"
-                  text={announcement.title}
-                  textColor="text-added-brown"
-                />
-
-                <div className="relative mt-10">
-                  <img
-                    className="w-full rounded-xl object-cover"
-                    src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                      announcement.document
-                    }`}
-                    alt={announcement.title}
-                  />
-                  <div className="absolute bottom-2 right-2 text-brown-primary font-light text-sm bg-white bg-opacity-75 px-2 py-1 rounded">
-                    {formatDate(announcement.created_at)}
-                  </div>
-                </div>
-
-                <div
-                  className="mt-5 text-justify text-xl"
-                  dangerouslySetInnerHTML={{
-                    __html: announcement.detail,
-                  }}
-                />
-              </div>
+              <ReadNews
+                textTitle={announcement.title}
+                newsDocument={announcement.document}
+                newsTitle={announcement.title}
+                newsDetail={announcement.detail}
+                newsCreatedAt={announcement.created_at}
+              />
             )}
           </div>
         )}

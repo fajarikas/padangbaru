@@ -7,6 +7,7 @@ import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import NewsCard from "../../parts/Information/NewsCard";
 import Search from "../../components/Search/Search";
 import Pagination from "../../components/Pagination";
+import NotFound from "../../parts/Information/NotFound";
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -49,41 +50,59 @@ const News = () => {
         textPosition="text-left"
         list={[{ url: "/", name: "Home" }, { name: "Kabar Desa" }]}
       />
-      <div className="w-11/12 mx-auto mt-10 mb-5">
+      <div className="  w-11/12 mx-auto mt-10 mb-5">
         <SectionTitle
           color="bg-added-green"
           position="mr-auto"
           text="Berita Paling Baru Seputar Padang Baru"
           textColor="text-added-brown"
         />
-        <Search
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Cari berita..."
-          value={searchTerm}
-        />
+        {filteredNews && filteredNews.length > 0 ? (
+          <Search
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Cari pengumuman..."
+            value={searchTerm}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       {loading ? (
         <div>loading</div>
       ) : (
         <div className="w-11/12 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-x-12 mt-10">
-          {filteredNews.map((item) => (
-            <NewsCard
-              document={item.document}
-              id={item.id}
-              summary={item.summary}
-              title={item.title}
-              key={item.id}
-              news_type_id={item.news_type_id}
-            />
-          ))}
-          <Pagination
-            currentPage={currentPage}
-            lastPage={lastPage}
-            onPrevious={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            onNext={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, lastPage))
-            }
-          />
+          {filteredNews && filteredNews.length > 0 ? (
+            filteredNews.map((item) => (
+              <div>
+                <NewsCard
+                  document={item.document}
+                  id={item.id}
+                  summary={item.summary}
+                  title={item.title}
+                  key={item.id}
+                  type={item.news_type_id}
+                />
+                {filteredNews.length > 12 ? (
+                  <div className="mt-5 mx-auto w-screen">
+                    <Pagination
+                      currentPage={currentPage}
+                      lastPage={lastPage}
+                      onPrevious={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      onNext={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, lastPage))
+                      }
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            ))
+          ) : (
+            <NotFound />
+          )}
         </div>
       )}
     </div>

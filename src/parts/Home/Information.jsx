@@ -3,6 +3,7 @@ import SectionTitle from "../../components/SectionTitle";
 import { fetchData } from "../../helpers/fetch";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
+import NotFound from "../Information/NotFound";
 
 const Information = ({ id }) => {
   const [news, setNews] = useState([]);
@@ -74,7 +75,7 @@ const Information = ({ id }) => {
 
           <div>
             <Link
-              className="flex gap-x-2 items-center text-sm lg:text-base"
+              className="flex hover:border-b-1 hover:border-added-green border-transparent gap-x-2 items-center text-sm lg:text-base"
               to={newsType === 2 ? "/news/news" : "/news/announcements"}
             >
               Lebih banyak
@@ -88,44 +89,47 @@ const Information = ({ id }) => {
             <p>Loading...</p>
           ) : (
             <div className="flex gap-4 sm:gap-6 lg:gap-12 mt-8 pb-10 px-5 overflow-x-auto">
-              {filteredNews.map((data, key) => (
-                <Link
-                  to={
-                    data.news_type_id === 2
-                      ? `/news/news/${data.id}`
-                      : `/news/announcement/${data.id}`
-                  }
-                  className="bg-white pb-5 w-64 sm:w-72 lg:w-[423px] shadow-xl h-[450px] lg:h-[560px] rounded-xl hover:shadow-md transition-all duration-300 flex-shrink-0"
-                  key={key}
-                >
-                  <img
-                    className="w-full h-40 sm:h-48 lg:h-[287px] object-cover rounded-t-xl"
-                    src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                      data.document
-                    }`}
-                    alt="News Thumbnail"
-                  />
-                  <div className="mx-4 sm:mx-5">
-                    <p className="font-semibold text-base sm:text-lg lg:text-xl mt-3">
-                      {data.title}
-                    </p>
-                    <div
-                      className="mt-2 text-justify text-sm lg:text-base"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          data.summary.length > 150
-                            ? `${data.summary.substring(0, 150)}...`
-                            : data.summary,
-                      }}
+              {filteredNews && filteredNews.length > 0 ? (
+                filteredNews.map((data, key) => (
+                  <Link
+                    to={
+                      data.news_type_id === 2
+                        ? `/news/news/${data.id}`
+                        : `/news/announcement/${data.id}`
+                    }
+                    className="bg-white pb-5 w-64 sm:w-72 lg:w-[423px] shadow-xl h-[450px] lg:h-[560px] rounded-xl hover:shadow-md transition-all duration-300 flex-shrink-0"
+                    key={key}
+                  >
+                    <img
+                      className="w-full h-40 sm:h-48 lg:h-[287px] object-cover rounded-t-xl"
+                      src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
+                        data.document
+                      }`}
+                      alt="News Thumbnail"
                     />
-                  </div>
-
-                  <div className="mx-4 sm:mx-5 mt-2 text-added-green font-semibold flex items-center gap-x-2">
-                    Selengkapnya
-                    <IoMdArrowDropright />
-                  </div>
-                </Link>
-              ))}
+                    <div className="mx-4 sm:mx-5">
+                      <p className="font-semibold text-base sm:text-lg lg:text-xl mt-3">
+                        {data.title}
+                      </p>
+                      <div
+                        className="mt-2 text-justify text-sm lg:text-base"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            data.summary.length > 150
+                              ? `${data.summary.substring(0, 150)}...`
+                              : data.summary,
+                        }}
+                      />
+                    </div>
+                    <div className="mx-4 sm:mx-5 mt-2 text-added-green font-semibold flex items-center gap-x-2">
+                      Selengkapnya
+                      <IoMdArrowDropright />
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <NotFound />
+              )}
             </div>
           )}
         </div>

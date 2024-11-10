@@ -120,7 +120,7 @@ const Navbar = () => {
             </button>
             <div className="relative">
               <button
-                className="flex items-center gap-x-2"
+                className="flex items-center gap-x-1"
                 onClick={handleInfoButton}
               >
                 <p>Informasi Desa</p>
