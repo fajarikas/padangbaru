@@ -7,6 +7,9 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "https://padang-baru-frontend.vercel.app",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
   },
   withCredentials: true,
 });
@@ -23,9 +26,9 @@ api.interceptors.request.use((config) => {
 export const fetchData = async (endpoint) => {
   try {
     const response = await api.get(endpoint);
-    // console.log("response", response);
     return response.data;
   } catch (e) {
     console.error(e);
+    throw e;
   }
 };
