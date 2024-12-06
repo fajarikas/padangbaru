@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SectionTitle from "../../components/SectionTitle";
-import { fetchData } from "../../helpers/fetch";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 import NotFound from "../Information/NotFound";
+import { news as newsData } from "../../dummy/news";
+import { announcements as announcementData } from "../../dummy/announcements";
 
 const Information = ({ id }) => {
   const [news, setNews] = useState([]);
@@ -11,30 +12,28 @@ const Information = ({ id }) => {
   const [newsType, setNewsType] = useState(2);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetchData("/news");
-        setNews(response.data || []); // Pastikan `news` diisi dengan array kosong jika data tidak ada
-      } catch (e) {
-        console.error("Failed to fetch news", e);
-        setNews([]); // Tetap set `news` sebagai array kosong jika terjadi error
-      } finally {
-        setLoading(false);
+    console.log("Current newsType:", newsType);
+
+    const loadData = () => {
+      setLoading(true);
+
+      let filteredData = [];
+      if (newsType === 2) {
+        filteredData = newsData.filter((item) => item.news_type_id === 2);
       }
+      if (newsType === 1) {
+        filteredData = newsData.filter((item) => item.news_type_id === 1);
+      }
+
+      console.log(filteredData);
+      setNews(filteredData);
+      setLoading(false);
     };
 
     loadData();
-  }, []);
+  }, [newsType]);
 
-  console.log("news", news);
-
-  const handleFilter = (type) => {
-    setNewsType(type);
-  };
-
-  // Pastikan hanya mem-filter ketika `news` adalah array
-  const filteredNews = (news && Array.isArray(news) ? news : [])
-    .filter((item) => item?.news_type_id === newsType)
+  const filteredNews = news
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(0, 5);
 
@@ -60,7 +59,7 @@ const Information = ({ id }) => {
               className={`border-b-2 hover:border-added-green ${
                 newsType === 2 ? "border-added-green" : "border-transparent"
               }`}
-              onClick={() => handleFilter(2)}
+              onClick={() => setNewsType(2)}
             >
               Berita Desa
             </button>
@@ -71,7 +70,7 @@ const Information = ({ id }) => {
                   ? "border-added-green hover:border-added-green"
                   : "border-transparent"
               }`}
-              onClick={() => handleFilter(1)}
+              onClick={() => setNewsType(1)}
             >
               Pengumuman
             </button>
@@ -93,22 +92,20 @@ const Information = ({ id }) => {
             <p>Loading...</p>
           ) : (
             <div className="flex gap-4 sm:gap-6 lg:gap-12 mt-8 pb-10 px-5 overflow-x-auto">
-              {filteredNews && filteredNews.length > 0 ? (
+              {filteredNews.length > 0 ? (
                 filteredNews.map((data, key) => (
                   <Link
                     to={
                       data.news_type_id === 2
                         ? `/news/news/${data.id}`
-                        : `/news/announcement/${data.id}`
+                        : `/news/announcements/${data.id}`
                     }
                     className="bg-white pb-5 w-64 sm:w-72 lg:w-[423px] shadow-xl h-[450px] lg:h-[560px] rounded-xl hover:shadow-md transition-all duration-300 flex-shrink-0"
                     key={key}
                   >
                     <img
                       className="w-full h-40 sm:h-48 lg:h-[287px] object-cover rounded-t-xl"
-                      src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                        data.document
-                      }`}
+                      src={data.document}
                       alt="News Thumbnail"
                     />
                     <div className="mx-4 sm:mx-5">

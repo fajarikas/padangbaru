@@ -49,7 +49,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="lg:w-2/3 flex flex-col lg:flex-row lg:justify-end lg:space-x-32 space-y-10 lg:space-y-0">
+          <div className="lg:w-2/3 flex flex-col lg:flex-row lg:justify-around lg:space-x-32 space-y-10 lg:space-y-0">
             <div>
               <p className="tracking-extraWide text-lg lg:text-xl font-semibold">
                 DESA
@@ -106,7 +106,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-
+            {/* 
             <div>
               <p className="tracking-extraWide text-lg lg:text-xl font-semibold">
                 INFRASTRUKTUR
@@ -119,7 +119,7 @@ const Footer = () => {
                   <Link to="/infrastructure/library">Perpustakaan</Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

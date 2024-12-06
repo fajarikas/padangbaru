@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from "react";
 import SectionTitle from "../../components/SectionTitle";
-import { fetchData } from "../../helpers/fetch";
+import { media } from "../../dummy/media"; // Import data dummy
 import { Link } from "react-router-dom";
 
 const Media = ({ id }) => {
   const [socialMedia, setSocialMedia] = useState([]);
   const [activeSocialMedia, setActiveSocialMedia] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetchData("/social-media");
-        setSocialMedia(response.data);
-
-        if (response.data && response.data.length > 0) {
-          setActiveSocialMedia(response.data[0]); // Set elemen pertama sebagai default jika ada data
-        }
-      } catch (e) {
-        console.error("Failed to fetch social media", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    // Menggunakan data dummy
+    if (media && media.length > 0) {
+      setSocialMedia(media);
+      setActiveSocialMedia(media[0]); // Set default media pertama
+    }
   }, []);
 
   const handleActiveSocialMedia = (social) => {
@@ -72,9 +61,7 @@ const Media = ({ id }) => {
                 }}
               >
                 <img
-                  src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                    social.logo
-                  }`}
+                  src={social.logo} // Menggunakan path ke folder dummy
                   alt={`${social.name} logo`}
                   className="mr-2 w-6 h-6 object-contain"
                 />
@@ -92,11 +79,9 @@ const Media = ({ id }) => {
             >
               <div className="flex lg:inline justify-center">
                 <img
-                  src={`${import.meta.env.VITE_API_BASE_URL}/storage/${
-                    activeSocialMedia.logo
-                  }`}
+                  src={activeSocialMedia.logo} // Menggunakan path ke folder dummy
                   alt={`${activeSocialMedia.name} logo`}
-                  className="w-1/6 lg:w-3/4 object-contain object-center"
+                  className="w-[3rem] lg:w-[7rem] object-contain object-center"
                 />
               </div>
               <p className="font-semibold text-lg mt-4 lg:mt-0 lg:text-3xl text-center">

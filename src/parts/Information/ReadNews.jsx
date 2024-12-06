@@ -8,18 +8,21 @@ const ReadNews = ({
   newsDetail,
   newsCreatedAt,
 }) => {
-  // Function to format date
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    } catch (error) {
+      return "Tanggal tidak valid";
+    }
   };
 
   return (
-    <div className="">
+    <div className="read-news">
       <SectionTitle
         color="bg-added-green"
         position="mr-auto"
@@ -27,22 +30,22 @@ const ReadNews = ({
         textColor="text-brown-primary"
         textPosition="text-left"
       />
+
       <div className="mt-10 flex flex-wrap lg:flex-nowrap gap-6">
-        {/* Image Section */}
         <div className="flex-shrink-0 w-full lg:w-1/3 mb-4 lg:mb-0">
           <img
-            className="w-full h-screen object-cover rounded-xl"
-            src={`${import.meta.env.VITE_API_BASE_URL}/storage/${newsDocument}`}
+            className="w-full h-auto object-cover rounded-xl"
+            src={newsDocument}
             alt={newsTitle}
+            onError={(e) => (e.target.src = "/placeholder-image.png")}
           />
         </div>
 
-        {/* Text Section */}
         <div className="flex-grow w-11/12 lg:w-2/3 text-justify text-xl px-4 lg:px-6">
           <div
             className="mt-5 lg:h-screen lg:overflow-auto"
             dangerouslySetInnerHTML={{
-              __html: newsDetail, // Remove the extra braces
+              __html: newsDetail || "<p>Detail berita tidak tersedia.</p>",
             }}
           />
           <div className="text-brown-primary font-light text-sm text-right mt-10">

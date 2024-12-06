@@ -7,12 +7,11 @@ import ReadNews from "../../../parts/Information/ReadNews";
 
 const AnnouncementsDetail = () => {
   const [announcement, setAnnouncement] = useState();
-  const [loading, setLoading] = useState(true); // Set loading default true
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation().pathname;
   const id = location.split("/").pop();
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("id-ID", {
@@ -48,10 +47,7 @@ const AnnouncementsDetail = () => {
         list={[
           { url: "/", name: "Home" },
           { url: "/news/announcements", name: "Pengumuman" },
-          {
-            // url: `news/announcement/${id}`,
-            name: announcement?.title || "Loading...",
-          },
+          { name: announcement?.title || "Loading..." },
         ]}
       />
 
@@ -65,8 +61,8 @@ const AnnouncementsDetail = () => {
                 textTitle={announcement.title}
                 newsDocument={announcement.document}
                 newsTitle={announcement.title}
-                newsDetail={announcement.detail}
-                newsCreatedAt={announcement.created_at}
+                newsDetail={announcement.detail} // Isi detail pengumuman
+                newsCreatedAt={announcement.created_at} // Tanggal pengumuman
               />
             )}
           </div>

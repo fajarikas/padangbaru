@@ -10,7 +10,7 @@ const NewsCard = ({ id, document, title, summary, type }) => {
     <Link to={linkPath} key={id} className=" rounded-xl ">
       <img
         className="w-full rounded-xl h-1/2 object-cover object-center"
-        src={`${import.meta.env.VITE_API_BASE_URL}/storage/${document}`}
+        src={document}
         alt={title}
       />
       <div className="mt-3">
@@ -19,8 +19,8 @@ const NewsCard = ({ id, document, title, summary, type }) => {
           className="mt-2 text-justify"
           dangerouslySetInnerHTML={{
             __html:
-              summary.length > 200
-                ? `${summary.substring(0, 200)}...`
+              summary?.length > 200
+                ? `${summary?.substring(0, 200)}...`
                 : summary,
           }}
         />

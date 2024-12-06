@@ -1,45 +1,33 @@
 import React, { useEffect, useState } from "react";
 import SectionTitle from "../../components/SectionTitle";
 import Header from "../../parts/Information/Header";
-import { fetchData } from "../../helpers/fetch";
-import { Link } from "react-router-dom";
-import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import NewsCard from "../../parts/Information/NewsCard";
 import Search from "../../components/Search/Search";
 import Pagination from "../../components/Pagination";
 import NotFound from "../../parts/Information/NotFound";
+import { news as newsData } from "../../dummy/news";
 
 const News = () => {
   const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
-
-  const loadData = async (page = 1) => {
-    setLoading(true);
-    try {
-      const response = await fetchData(
-        `/news?filter[news_type_id]=2&page=${page}`
-      );
-      setNews(response.data);
-      setCurrentPage(response.meta.current_page);
-      setLastPage(response.meta.last_page);
-      setLoading(false);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const itemsPerPage = 1;
   useEffect(() => {
-    loadData(currentPage);
-  }, [currentPage]);
+    const filteredNewsData = newsData.filter((item) => item.news_type_id === 2);
+    setNews(filteredNewsData);
+  }, []);
 
-  const filteredNews = news?.filter((item) =>
+  const filteredNews = news.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("berita", news);
+
+  const lastPage = Math.ceil(filteredNews.length / itemsPerPage);
+
+  const currentNews = filteredNews.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="text-brown-primary">
       <Header
@@ -50,59 +38,55 @@ const News = () => {
         textPosition="text-left"
         list={[{ url: "/", name: "Home" }, { name: "Kabar Desa" }]}
       />
-      <div className="  w-11/12 mx-auto mt-10 mb-5">
+
+      <div className="w-11/12 mx-auto mt-10 mb-5">
         <SectionTitle
           color="bg-added-green"
           position="mr-auto"
           text="Berita Paling Baru Seputar Padang Baru"
           textColor="text-added-brown"
         />
-        {filteredNews && filteredNews?.length > 0 ? (
-          <Search
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Cari pengumuman..."
-            value={searchTerm}
-          />
+        <Search
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          placeholder="Cari berita..."
+          value={searchTerm}
+        />
+      </div>
+
+      <div className="w-11/12 mx-auto mt-10">
+        {currentNews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentNews.map((item) => (
+              <NewsCard
+                key={item.id}
+                document={item.document}
+                id={item.id}
+                summary={item.summary}
+                title={item.title}
+                type={item.news_type_id}
+              />
+            ))}
+          </div>
         ) : (
-          <></>
+          <div className="flex justify-center">
+            <NotFound />
+          </div>
         )}
       </div>
-      {loading ? (
-        <div>loading</div>
-      ) : (
-        <div className="w-11/12 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-x-12 mt-10">
-          {filteredNews && filteredNews?.length > 0 ? (
-            filteredNews?.map((item) => (
-              <div>
-                <NewsCard
-                  document={item.document}
-                  id={item.id}
-                  summary={item.summary}
-                  title={item.title}
-                  key={item.id}
-                  type={item.news_type_id}
-                />
-                {filteredNews?.length > 12 ? (
-                  <div className="mt-5 mx-auto w-screen">
-                    <Pagination
-                      currentPage={currentPage}
-                      lastPage={lastPage}
-                      onPrevious={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      onNext={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, lastPage))
-                      }
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            ))
-          ) : (
-            <NotFound />
-          )}
+
+      {filteredNews.length > itemsPerPage && (
+        <div className="mt-5 flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            lastPage={lastPage}
+            onPrevious={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onNext={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, lastPage))
+            }
+          />
         </div>
       )}
     </div>

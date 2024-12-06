@@ -38,22 +38,22 @@ const Navbar = () => {
 
   const handleInfoButton = () => {
     setIsInfoDisplayed((prev) => !prev);
-    setIsInfraDisplayed(false); // Close other dropdown
+    setIsInfraDisplayed(false);
   };
 
   const handleInfraButton = () => {
     setIsInfraDisplayed((prev) => !prev);
-    setIsInfoDisplayed(false); // Close other dropdown
+    setIsInfoDisplayed(false);
   };
 
   const handleInfoButtonMobile = () => {
     setInformation((prev) => !prev);
-    setInfrastructure(false); // Close other dropdown
+    setInfrastructure(false);
   };
 
   const handleInfraButtonMobile = () => {
     setInfrastructure((prev) => !prev);
-    setInformation(false); // Close other dropdown
+    setInformation(false);
   };
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Navbar = () => {
 
   const handleMobileNavbar = () => {
     setMobileNavbar((prev) => !prev);
-    closeAllDropdowns(); // Ensure all dropdowns close when mobile menu is toggled
+    closeAllDropdowns();
   };
 
   const handleCloseNavbar = () => {
@@ -97,7 +97,6 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* Desktop nav */}
       <div
         className={`hidden lg:flex z-50 fixed top-0 py-5 text-white w-full transition-all duration-300 ${
           isScrolled ? "bg-black bg-opacity-90" : "bg-transparent"
@@ -140,34 +139,33 @@ const Navbar = () => {
               )}
             </div>
 
-            <div className="relative">
-              <button
-                className="flex items-center gap-x-2"
-                onClick={handleInfraButton}
-              >
-                <p>Infrastruktur Desa</p>
-                <IoMdArrowDropdown />
-              </button>
-              {isInfraDisplayed && (
-                <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
-                  <ul>
-                    <li onClick={closeAllDropdowns}>
-                      <Link to="/infrastructure/library">
-                        Perpustakaan Betunas
-                      </Link>
-                    </li>
-                    <li onClick={closeAllDropdowns}>
-                      <Link to="/infrastructure/bumdesa">Bumdesa</Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            {/* <div className="relative">
+            <button
+              className="flex items-center gap-x-2"
+              onClick={handleInfraButton}
+            >
+              <p>Infrastruktur Desa</p>
+              <IoMdArrowDropdown />
+            </button>
+            {isInfraDisplayed && (
+              <div className="absolute mt-2 py-2 px-4 bg-black bg-opacity-80 rounded shadow-lg">
+                <ul>
+                  <li onClick={closeAllDropdowns}>
+                    <Link to="/infrastructure/library">
+                      Perpustakaan Betunas
+                    </Link>
+                  </li>
+                  <li onClick={closeAllDropdowns}>
+                    <Link to="/infrastructure/bumdesa">Bumdesa</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div> */}
           </div>
         </div>
       </div>
 
-      {/* Mobile nav */}
       <div
         className={`lg:hidden z-50 fixed top-0 py-4 text-white w-full transition-all duration-300 ${
           isScrolled ? "bg-black" : "bg-transparent"
@@ -235,7 +233,7 @@ const Navbar = () => {
                 </div>
               </li>
 
-              <li className="relative">
+              {/* <li className="relative">
                 <button
                   className="flex items-center space-x-1"
                   onClick={handleInfraButtonMobile}
@@ -258,7 +256,7 @@ const Navbar = () => {
                     </ul>
                   )}
                 </div>
-              </li>
+              </li> */}
             </ul>
           </div>
         )}

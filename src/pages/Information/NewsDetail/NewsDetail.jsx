@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../parts/Information/Header";
 import { useLocation } from "react-router-dom";
-import { fetchData } from "../../../helpers/fetch";
 import ReadNews from "../../../parts/Information/ReadNews";
+import { news as newsData } from "../../../dummy/news";
 
 const NewsDetail = () => {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const location = useLocation().pathname;
-  const id = location.split("/").pop();
+  const location = useLocation();
+  const id = parseInt(location.pathname.split("/").pop(), 10);
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetchData(`news/${id}`);
-        setNews(response.data);
-      } catch (e) {
-        console.error("Failed to fetch data", e);
-        setError("Failed to load news data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    console.log("News ID received:", id);
+    const foundNews = newsData.find((item) => item.id === id);
+    console.log("Found News:", foundNews);
+
+    if (foundNews) {
+      setNews(foundNews);
+    } else {
+      setError("Berita tidak ditemukan.");
+    }
+
+    setLoading(false);
   }, [id]);
 
   return (
@@ -50,17 +47,13 @@ const NewsDetail = () => {
         ) : error ? (
           <div className="text-red-500 text-lg">{error}</div>
         ) : (
-          <div className="w-full mx-auto flex flex-wrap gap-x-10">
-            {news && (
-              <ReadNews
-                textTitle={news.title}
-                newsDocument={news.document}
-                newsTitle={news.title}
-                newsDetail={news.detail}
-                newsCreatedAt={news.created_at}
-              />
-            )}
-          </div>
+          <ReadNews
+            textTitle={news.title}
+            newsDocument={news.document}
+            newsTitle={news.title}
+            newsDetail={news.content}
+            newsCreatedAt={news.created_at}
+          />
         )}
       </div>
     </div>
