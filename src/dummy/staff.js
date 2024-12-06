@@ -10,7 +10,7 @@ export const staff = [
     picture: "/images/content/placeholder.png",
   },
   {
-    name: "Desti Dermawan, S.Sos",
+    name: "Firmansyah, S.Kom",
     title: "Kaur Keuangan",
     picture: "/images/content/placeholder.png",
   },
@@ -20,7 +20,7 @@ export const staff = [
     picture: "/images/content/placeholder.png",
   },
   {
-    name: "Firmansyah, S.Kom",
+    name: "Desti Dermawan, S.Sos",
     title: "Kaur Perencanaan",
     picture: "/images/content/placeholder.png",
   },
